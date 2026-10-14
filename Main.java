@@ -27,6 +27,7 @@ public class Main {
 		System.out.println("----------------------------");
 		do {
 			System.out.println("[1] Ver registros");
+			System.out.println("[2] Actualizar registros");
 			System.out.println("============================");
 			System.out.print("Seleccione una opcion:");
 			opcion = scan.nextInt();
@@ -87,9 +88,19 @@ public class Main {
 						System.out.println("Total: " + contador2 + " terremotos registrados ("+sumador+" L)");
 						System.out.println("========================================");
 					
-					
+				case 3:
+					break;
 				}
-				
+			case 2:
+				System.out.println("============== ACTUALIZAR REGISTROS ===============");
+				System.out.println("[1] Agregar");
+				System.out.println("[2] Editar");
+				System.out.println("[3] Eliminar");
+				System.out.println("[4] Volver al menu principal");
+				System.out.println("==================================");
+				System.out.println("Seleccione una opcion: ");
+				scan.nextInt();
+				break;
 			}
 		}while(opcion!=4);
 		
