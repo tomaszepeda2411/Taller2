@@ -1,18 +1,18 @@
 package taller2;
 
 public class Terremoto {
-	private Participante consumidor;
+	private String consumidor;
 	private float litros;
 	private String fecha;
 	
-	public Terremoto(Participante consumidor, float litros, String fecha) {
+	public Terremoto(String consumidor, float litros, String fecha) {
 		
 		this.consumidor = consumidor;
 		this.litros = litros;
 		this.fecha = fecha;
 	}
 
-	public Participante getConsumidor() {
+	public String getConsumidor() {
 		return consumidor;
 	}
 

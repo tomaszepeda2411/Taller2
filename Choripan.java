@@ -1,12 +1,12 @@
 package taller2;
 
 public class Choripan {
-	private Participante consumidor;
+	private String consumidor;
 	private int largo;
 	private int ancho;
 	private String fecha;
-	
-	public Choripan(Participante consumidor, int largo, int ancho, String fecha) {
+	private int calorias = 0;
+	public Choripan(String consumidor, int largo, int ancho, String fecha) {
 		
 		this.consumidor = consumidor;
 		this.largo = largo;
@@ -14,7 +14,7 @@ public class Choripan {
 		this.fecha = fecha;
 	}
 
-	public Participante getConsumidor() {
+	public String getConsumidor() {
 		return consumidor;
 	}
 
@@ -30,5 +30,8 @@ public class Choripan {
 		return fecha;
 	}
 	
-	
+	public int calcularKcal() {
+		calorias = (largo*ancho)/3;
+		return calorias;
+	}
 }
