@@ -24,5 +24,8 @@ public class Terremoto {
 		return fecha;
 	}
 	
-	
+	public float calcularKcal() {
+		float calorias =  ((litros*10)/3);
+		return calorias;
+	}
 }

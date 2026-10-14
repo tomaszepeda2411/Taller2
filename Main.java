@@ -40,6 +40,7 @@ public class Main {
 				System.out.println("==========================");
 				System.out.println("Seleccione una opcion: ");
 				opcion2 = scan.nextInt();
+				scan.nextLine();
 				switch(opcion2) {
 				case 1:
 					int contador = 0;
@@ -49,7 +50,7 @@ public class Main {
 
 					for (int i = 0; i<choripanes.length;i++) {
 						if((choripanes[i]!=null)) {
-							System.out.printf("%-5d%-15s%-10d%-10d%-15s%-10d%n",
+							System.out.printf("%-5d%-15s%-10d%-10d%-15s%-10.2f%n",
 									contador++,
 									choripanes[i].getConsumidor(),
 									choripanes[i].getLargo(),
@@ -61,9 +62,34 @@ public class Main {
 					
 					}System.out.println("Total: " + contador+" choripanes registrados");
 					System.out.println("===============================");
-					break;
+					System.out.println("Presione ENTER para continuar:");
+					scan.nextLine();
+				case 2:
+					int contador2 = 0;
+					float sumador = 0;
+					System.out.println("============= TERREMOTOS ==============");
+					System.out.printf("%-5s%-15s%-10s%-15s%-10s%n",
+							"N°", "Consumidor", "Litros","Fecha", "Kcal");
+					
+					for (int i=0;i<terremotos.length;i++) {
+						if(terremotos[i]!=null) {
+							sumador += terremotos[i].getLitros();
+							System.out.printf("%-5d%-15s%-10.2f%-15s%-10.2f%n",
+									contador2++,
+									terremotos[i].getConsumidor(),
+									terremotos[i].getLitros(),
+									terremotos[i].getFecha(),
+									terremotos[i].calcularKcal());
+
+							}
+						
+						}System.out.println("-------------------------------------------");
+						System.out.println("Total: " + contador2 + " terremotos registrados ("+sumador+" L)");
+						System.out.println("========================================");
+					
+					
 				}
-				break;
+				
 			}
 		}while(opcion!=4);
 		

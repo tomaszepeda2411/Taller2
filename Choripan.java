@@ -30,7 +30,7 @@ public class Choripan {
 		return fecha;
 	}
 	
-	public int calcularKcal() {
+	public float calcularKcal() {
 		calorias = (largo*ancho)/3;
 		return calorias;
 	}
