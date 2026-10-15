@@ -34,6 +34,7 @@ public class Main {
 			switch(opcion) {
 			case 1:
 				int opcion2 = 0;
+				do {
 				System.out.println("========VER REGISTROS=======");
 				System.out.println("[1] Choripanes");
 				System.out.println("[2] Terremotos");
@@ -65,6 +66,7 @@ public class Main {
 					System.out.println("===============================");
 					System.out.println("Presione ENTER para continuar:");
 					scan.nextLine();
+					break;
 				case 2:
 					int contador2 = 0;
 					float sumador = 0;
@@ -87,10 +89,15 @@ public class Main {
 						}System.out.println("-------------------------------------------");
 						System.out.println("Total: " + contador2 + " terremotos registrados ("+sumador+" L)");
 						System.out.println("========================================");
+						System.out.println("Presione ENTER para continuar:");
+						scan.nextLine();
+						break;
 					
 				case 3:
 					break;
 				}
+				}while(opcion2 !=3);
+				break;
 			case 2:
 				System.out.println("============== ACTUALIZAR REGISTROS ===============");
 				System.out.println("[1] Agregar");
