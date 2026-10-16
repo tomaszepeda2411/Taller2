@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Main {
 	static int registros = 0;
+	static int opcion = 0;
 	static Participante[] participantes = new Participante[200];
 	static Choripan[] choripanes = new Choripan[200];
 	static Terremoto[] terremotos = new Terremoto[200];
@@ -28,88 +29,140 @@ public class Main {
 		do {
 			System.out.println("[1] Ver registros");
 			System.out.println("[2] Actualizar registros");
+			System.out.println("[3] Calcular metricas");
+			System.out.println("[4] Salir");
 			System.out.println("============================");
 			System.out.print("Seleccione una opcion:");
 			opcion = scan.nextInt();
 			switch(opcion) {
 			case 1:
-				int opcion2 = 0;
-				do {
-				System.out.println("========VER REGISTROS=======");
-				System.out.println("[1] Choripanes");
-				System.out.println("[2] Terremotos");
-				System.out.println("[3] Volver al menu");
-				System.out.println("==========================");
-				System.out.println("Seleccione una opcion: ");
-				opcion2 = scan.nextInt();
-				scan.nextLine();
-				switch(opcion2) {
-				case 1:
-					int contador = 0;
-					System.out.println("======== CHORIPANES =======");
-					System.out.printf("%-5s%-15s%-10s%-10s%-15s%-10s%n",
-							"N°", "Consumidor", "Largo", "Ancho", "Fecha", "Kcal");
-
-					for (int i = 0; i<choripanes.length;i++) {
-						if((choripanes[i]!=null)) {
-							System.out.printf("%-5d%-15s%-10d%-10d%-15s%-10.2f%n",
-									contador++,
-									choripanes[i].getConsumidor(),
-									choripanes[i].getLargo(),
-									choripanes[i].getAncho(),
-									choripanes[i].getFecha(),
-									choripanes[i].calcularKcal());
-
-							}
-					
-					}System.out.println("Total: " + contador+" choripanes registrados");
-					System.out.println("===============================");
-					System.out.println("Presione ENTER para continuar:");
-					scan.nextLine();
-					break;
-				case 2:
-					int contador2 = 0;
-					float sumador = 0;
-					System.out.println("============= TERREMOTOS ==============");
-					System.out.printf("%-5s%-15s%-10s%-15s%-10s%n",
-							"N°", "Consumidor", "Litros","Fecha", "Kcal");
-					
-					for (int i=0;i<terremotos.length;i++) {
-						if(terremotos[i]!=null) {
-							sumador += terremotos[i].getLitros();
-							System.out.printf("%-5d%-15s%-10.2f%-15s%-10.2f%n",
-									contador2++,
-									terremotos[i].getConsumidor(),
-									terremotos[i].getLitros(),
-									terremotos[i].getFecha(),
-									terremotos[i].calcularKcal());
-
-							}
-						
-						}System.out.println("-------------------------------------------");
-						System.out.println("Total: " + contador2 + " terremotos registrados ("+sumador+" L)");
-						System.out.println("========================================");
-						System.out.println("Presione ENTER para continuar:");
-						scan.nextLine();
-						break;
-					
-				case 3:
-					break;
-				}
-				}while(opcion2 !=3);
+				verRegistros();
 				break;
 			case 2:
-				System.out.println("============== ACTUALIZAR REGISTROS ===============");
-				System.out.println("[1] Agregar");
-				System.out.println("[2] Editar");
-				System.out.println("[3] Eliminar");
-				System.out.println("[4] Volver al menu principal");
-				System.out.println("==================================");
-				System.out.println("Seleccione una opcion: ");
-				scan.nextInt();
+				actualizarRegistros();
+				break;
+			case 3:
+				calcularMetricas();
+				break;
+			case 4:
+				System.out.println("Hasta luego...");
 				break;
 			}
 		}while(opcion!=4);
+		
+	}
+	private static void calcularMetricas() {
+		
+	}
+	private static void actualizarRegistros() {
+		int opcion = 0;
+		System.out.println("============== ACTUALIZAR REGISTROS ===============");
+		System.out.println("[1] Agregar");
+		System.out.println("[2] Editar");
+		System.out.println("[3] Eliminar");
+		System.out.println("[4] Volver al menu principal");
+		System.out.println("==================================");
+		System.out.println("Seleccione una opcion: ");
+		opcion = scan.nextInt();
+		switch(opcion) {
+		case 1:
+			int tipo = 0;
+			System.out.println();
+			System.out.println("Tipo de registro:");
+			System.out.println("[1] Choripanes");
+			System.out.println("[2] Terremotos");
+			System.out.println("[3] Cancelar");
+			tipo = scan.nextInt();
+			switch(tipo) {
+			case 1:
+				int aux = 0;
+				for(int i = 0; i<participantes.length;i++) {
+					if(participantes[i]!=null) {
+						System.out.println("["+(i+1) +"] " + participantes[i].getNombre());
+					}
+					System.out.println("Seleccionar al consumidor: ");
+						aux= scan.nextInt();
+						String nombreNuevo = participantes[aux-1].getNombre();
+						
+						System.out.print("Largo del choripan (cm): ");
+						int largoNuevo = scan.nextInt();
+						System.out.print("Ancho del choripan (cm): ");
+						int anchoNuevo = scan.nextInt();
+						System.out.print("Fecha (YYYY-MM-DD): ");
+						String fechaNueva = scan.nextLine();
+						Choripan nuevoChoripan = new Choripan(nombreNuevo,largoNuevo,anchoNuevo,fechaNueva);
+			}
+			}
+			break;
+		
+	}
+	}
+	
+	private static void verRegistros() {
+		int opcion = 0;
+		do {
+		System.out.println("========VER REGISTROS=======");
+		System.out.println("[1] Choripanes");
+		System.out.println("[2] Terremotos");
+		System.out.println("[3] Volver al menu");
+		System.out.println("==========================");
+		System.out.println("Seleccione una opcion: ");
+		opcion = scan.nextInt();
+		scan.nextLine();
+		switch(opcion) {
+		case 1:
+			int contador = 0;
+			System.out.println("======== CHORIPANES =======");
+			System.out.printf("%-5s%-15s%-10s%-10s%-15s%-10s%n",
+					"N°", "Consumidor", "Largo", "Ancho", "Fecha", "Kcal");
+
+			for (int i = 0; i<choripanes.length;i++) {
+				if((choripanes[i]!=null)) {
+					System.out.printf("%-5d%-15s%-10d%-10d%-15s%-10.2f%n",
+							contador++,
+							choripanes[i].getConsumidor(),
+							choripanes[i].getLargo(),
+							choripanes[i].getAncho(),
+							choripanes[i].getFecha(),
+							choripanes[i].calcularKcal());
+
+					}
+			
+			}System.out.println("Total: " + contador+" choripanes registrados");
+			System.out.println("===============================");
+			System.out.println("Presione ENTER para continuar:");
+			scan.nextLine();
+			break;
+		case 2:
+			int contador2 = 0;
+			float sumador = 0;
+			System.out.println("============= TERREMOTOS ==============");
+			System.out.printf("%-5s%-15s%-10s%-15s%-10s%n",
+					"N°", "Consumidor", "Litros","Fecha", "Kcal");
+			
+			for (int i=0;i<terremotos.length;i++) {
+				if(terremotos[i]!=null) {
+					sumador += terremotos[i].getLitros();
+					System.out.printf("%-5d%-15s%-10.2f%-15s%-10.2f%n",
+							contador2++,
+							terremotos[i].getConsumidor(),
+							terremotos[i].getLitros(),
+							terremotos[i].getFecha(),
+							terremotos[i].calcularKcal());
+
+					}
+				
+				}System.out.println("-------------------------------------------");
+				System.out.println("Total: " + contador2 + " terremotos registrados ("+sumador+" L)");
+				System.out.println("========================================");
+				System.out.println("Presione ENTER para continuar:");
+				scan.nextLine();
+				break;
+			
+		case 3:
+			break;
+		}
+		}while(opcion !=3);
 		
 	}
 	private static void leerConsumidos() throws FileNotFoundException {
