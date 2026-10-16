@@ -1,7 +1,10 @@
 package taller2;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -34,6 +37,7 @@ public class Main {
 			System.out.println("============================");
 			System.out.print("Seleccione una opcion:");
 			opcion = scan.nextInt();
+			try {
 			switch(opcion) {
 			case 1:
 				verRegistros();
@@ -47,6 +51,11 @@ public class Main {
 			case 4:
 				System.out.println("Hasta luego...");
 				break;
+			 default:
+				System.out.println("Ingrese una opcion valida");
+			}
+			}catch(Exception e) {
+				System.out.println("Ocurrio un error(" + e +").Volviendo al menu");
 			}
 		}while(opcion!=4);
 		
@@ -56,6 +65,7 @@ public class Main {
 	}
 	private static void actualizarRegistros() {
 		int opcion = 0;
+		do {
 		System.out.println("============== ACTUALIZAR REGISTROS ===============");
 		System.out.println("[1] Agregar");
 		System.out.println("[2] Editar");
@@ -66,37 +76,112 @@ public class Main {
 		opcion = scan.nextInt();
 		switch(opcion) {
 		case 1:
-			int tipo = 0;
-			System.out.println();
-			System.out.println("Tipo de registro:");
-			System.out.println("[1] Choripanes");
-			System.out.println("[2] Terremotos");
-			System.out.println("[3] Cancelar");
-			tipo = scan.nextInt();
-			switch(tipo) {
-			case 1:
-				int aux = 0;
-				for(int i = 0; i<participantes.length;i++) {
-					if(participantes[i]!=null) {
-						System.out.println("["+(i+1) +"] " + participantes[i].getNombre());
-					}
-					System.out.println("Seleccionar al consumidor: ");
-						aux= scan.nextInt();
-						String nombreNuevo = participantes[aux-1].getNombre();
-						
-						System.out.print("Largo del choripan (cm): ");
-						int largoNuevo = scan.nextInt();
-						System.out.print("Ancho del choripan (cm): ");
-						int anchoNuevo = scan.nextInt();
-						System.out.print("Fecha (YYYY-MM-DD): ");
-						String fechaNueva = scan.nextLine();
-						Choripan nuevoChoripan = new Choripan(nombreNuevo,largoNuevo,anchoNuevo,fechaNueva);
+			menuAgregar();
+			
 			}
-			}
-			break;
+			
 		
+	}while(opcion!=4);
 	}
-	}
+	
+	private static void menuAgregar() {
+		int tipo = 0;
+		System.out.println();
+		System.out.println("Tipo de registro:");
+		System.out.println("[1] Choripanes");
+		System.out.println("[2] Terremotos");
+		System.out.println("[3] Cancelar");
+		tipo = scan.nextInt();
+		switch(tipo) {
+		case 1:
+			int aux = 0;
+			for(int i = 0; i<participantes.length;i++) {
+				if(participantes[i]!=null) {
+					System.out.println("["+(i+1) +"] " + participantes[i].getNombre());
+				}
+			}
+				System.out.println("Seleccionar al consumidor: ");
+					aux= scan.nextInt();
+					scan.nextLine();
+					
+					if(aux<1 || aux>participantes.length || participantes[aux-1] == null) {
+						System.out.println("Consumidor no valido");
+						break;
+					}
+					String nombreNuevo = participantes[aux-1].getNombre();
+					
+					System.out.print("Largo del choripan (cm): ");
+					int largoNuevo = scan.nextInt();
+					System.out.print("Ancho del choripan (cm): ");
+					int anchoNuevo = scan.nextInt();
+					scan.nextLine();
+					System.out.print("Fecha (YYYY-MM-DD): ");
+					String fechaNueva = scan.nextLine();
+					
+					int libre = -1;
+					
+					for (int i = 0; i<choripanes.length;i++) {
+						if(choripanes[i]==null) {
+							libre = i;
+							break;
+						}
+					}
+					if(libre == -1) {
+						System.out.println("No hay espacio para mas choripanes");
+						break;
+					}
+					if (!guardarLinea("Choripan;"+ nombreNuevo + ";" + largoNuevo + ";" + anchoNuevo + ";" + fechaNueva)) {
+						break;
+					}
+				
+					choripanes[libre] = new Choripan(nombreNuevo,largoNuevo,anchoNuevo,fechaNueva);
+					registros++;
+					System.out.println("Choripan agregado");
+					break;
+					
+		case 2:
+			for (int i = 0;i<participantes.length;i++) {
+				if(participantes[i] != null) {
+					System.out.println("["+(i+1) + "]" + participantes[i].getNombre());
+				}
+			}
+			System.out.println("Seleccionar al consumidor: ");
+			int consu = scan.nextInt();
+			scan.nextLine();
+			
+			if (consu<1 || consu > participantes.length || participantes[consu-1] == null) {
+				System.out.println("Consumidor no valido");
+				break;
+			}
+			String nombreT = participantes[consu-1].getNombre();
+			
+			System.out.println("Litros del terremoto: ");
+			float litrosNuevo = scan.nextFloat();
+			scan.nextLine();
+			System.out.println("Fecha (YYYY-MM-DD): ");
+			String fechaT = scan.nextLine();
+			
+			int libreT =-1;
+			for ( int i = 0;i<terremotos.length;i++) {
+				if(terremotos[i] == null) {
+					libreT = i;
+					break;
+				}
+			}
+			if(libreT ==-1) {
+				System.out.println("No hay espacio para mas terremotos");
+				break;
+			}
+			if(!guardarLinea("Terremoto;" + nombreT+ ";" + litrosNuevo + ";" + fechaT)) {
+			break;
+		}
+		terremotos[libreT] = new Terremoto( nombreT,litrosNuevo,fechaT);
+		registros++;
+		System.out.println("Terremoto agregado");
+		break;
+		}
+			}
+
 	
 	private static void verRegistros() {
 		int opcion = 0;
@@ -171,23 +256,32 @@ public class Main {
 		int cho = 0;
 		int terr = 0;
 		while(scan.hasNextLine()) {
-			String linea = scan.nextLine();
+			String linea = scan.nextLine().trim();
+			if(linea.isEmpty()) {
+				continue;
+			}
 			String[] partes = linea.split(";");
+			if(partes.length < 4) {
+				System.out.println("Linea ignorada ( formato invalido): " + linea);
+				continue;
+			}
 			String tipo = partes[0];
 			String consumidor = partes[1];
-			if (tipo.equalsIgnoreCase("choripan")) {
+			if (tipo.equalsIgnoreCase("choripan") && partes.length >=5) {
 				int largo = Integer.parseInt(partes[2]);
 				int ancho = Integer.parseInt(partes[3]);
 				String fecha = partes[4];
 				Choripan c = new Choripan(consumidor,largo,ancho,fecha);
 				choripanes[cho] = c;
 				cho++;
+				registros++;
 			}else if(tipo.equalsIgnoreCase("terremoto")) {
 				float litros = Float.parseFloat(partes[2]);
 				String fecha = partes[3];
 				Terremoto t = new Terremoto(consumidor,litros,fecha);
 				terremotos[terr] = t;
 				terr++;
+				registros++;
 			}
 			registros++;
 		}
@@ -204,6 +298,17 @@ public class Main {
 		}
 	}
 
+	
+	private static boolean guardarLinea(String linea) {
+		try ( BufferedWriter bw = new BufferedWriter(new FileWriter("Consumido.txt"))){
+			bw.write(linea);
+			bw.newLine();
+			return true;
+		} catch (IOException e) {
+			System.out.println("Error al guardar archivo");
+			return false;
+		}
+	}
 }
 
 
