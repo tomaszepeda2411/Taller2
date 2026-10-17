@@ -60,6 +60,11 @@ public class Main {
 		}while(opcion!=4);
 		
 	}
+	
+	
+	
+	
+	
 	private static void calcularMetricas() {
 		
 	}
@@ -72,11 +77,15 @@ public class Main {
 		System.out.println("[3] Eliminar");
 		System.out.println("[4] Volver al menu principal");
 		System.out.println("==================================");
-		System.out.println("Seleccione una opcion: ");
+		System.out.print("Seleccione una opcion: ");
 		opcion = scan.nextInt();
 		switch(opcion) {
 		case 1:
 			menuAgregar();
+			break;
+		case 2:
+			menuEditar();
+			break;
 			
 			}
 			
@@ -84,13 +93,142 @@ public class Main {
 	}while(opcion!=4);
 	}
 	
+	private static void menuEditar() {
+		scan.nextLine();
+		int tipo = 0;
+		do {
+		System.out.println("Tipo de registro a editar:");
+		System.out.println("  [1] Choripan");
+		System.out.println("  [2] Terremoto");
+		System.out.println("  [3] Salir");
+		System.out.print("Seleccione una opcion: ");
+		tipo = scan.nextInt();
+		System.out.println("");
+		switch(tipo) {
+		case 1:
+			System.out.println("======== CHORIPANES =======");
+			System.out.printf("%-5s%-15s%-10s%-10s%-15s%-10s%n",
+					"N°", "Consumidor", "Largo", "Ancho", "Fecha", "Kcal");
+			int contador = 0;
+			for (int i = 0; i<choripanes.length;i++) {
+				if((choripanes[i]!=null)) {
+					contador++;
+					System.out.printf("%-5d%-15s%-10d%-10d%-15s%-10.2f%n",
+							contador,
+							choripanes[i].getConsumidor(),
+							choripanes[i].getLargo(),
+							choripanes[i].getAncho(),
+							choripanes[i].getFecha(),
+							choripanes[i].calcularKcal());
+						}
+
+					}
+			if(contador ==0) {
+				System.out.println("No hay Choripanes registrados");
+				break;
+			}
+			System.out.print("Seleccion el registro a editar(0 para cancelar): ");
+			int registroEditar = scan.nextInt();
+			scan.nextLine();
+			if(registroEditar == 0) {
+				break;
+			}
+			
+			if(registroEditar <1 || registroEditar > contador) {
+				System.out.println("Numero no valido");
+				break;
+			}
+			
+			Choripan actual = choripanes[registroEditar-1];
+			
+			System.out.println("Registro actual -> Choripan | " + actual.getConsumidor() + " | " + actual.getLargo()
+					+ " x " + actual.getAncho() + "cm | " + actual.getFecha());
+			System.out.println("Deje el campo en blanco si lo quiere mantener");
+			System.out.println();
+			
+			boolean consumidorValido = false;
+			while(!consumidorValido) {
+				System.out.print("Consumidor [" + choripanes[registroEditar-1].getConsumidor() + "]:");
+				String nuevoConsumidor = scan.nextLine().trim();
+				if(nuevoConsumidor.isEmpty()) {
+					consumidorValido = true;
+			}else {
+				for(int i = 0; i<participantes.length;i++) {
+					if((participantes[i] != null) && participantes[i].getNombre().equalsIgnoreCase(nuevoConsumidor)) {
+						actual.setConsumidor(participantes[i].getNombre());
+						consumidorValido = true;
+			
+					}
+				}
+				if(!consumidorValido) {
+					System.out.println("Participante no encontrado en Participante.txt");
+				}
+			}
+		}
+		boolean largoValido = false;
+		while(!largoValido) {
+			System.out.print("Largo [" + actual.getLargo() + "cm]:");
+			String largoNuevo = scan.nextLine().trim();
+			if(largoNuevo.isEmpty()) {
+				largoValido = true;
+			}else {
+				try {
+					int valor = Integer.parseInt(largoNuevo);
+					if(valor <= 0) {
+						System.out.println("La medida debe ser mayor a 0");
+					}else {
+						actual.setLargo(valor);
+						largoValido=true;
+					}
+				}catch(NumberFormatException e) {
+					System.out.println("Ingrese un numero valido");
+				}
+			}
+		}
+		boolean anchoValido = false;
+		while(!anchoValido) {
+			System.out.print("Ancho[" + actual.getAncho()+ "cm]:");
+			String anchoNuevo = scan.nextLine().trim();
+			if(anchoNuevo.isEmpty()) {
+				anchoValido = true;
+			}else {
+				try {
+					int valor = Integer.parseInt(anchoNuevo);
+					if(valor <= 0) {
+						System.out.println("La medida debe ser mayor a 0");
+					}else {
+						actual.setAncho(valor);
+						anchoValido = true;
+					}
+				}catch(NumberFormatException e) {
+					System.out.println("Ingrese un numero valido");
+				}
+			}
+		}
+		System.out.println("Fecha [" + actual.getFecha() + "]: ");
+		String nuevaFecha = scan.nextLine().trim();
+		if(!nuevaFecha.isEmpty()) {
+			actual.setFecha(nuevaFecha);
+		}
+		
+		if(guardarTodo()) {
+			System.out.println("Choripan actualizado");
+		}
+			break; 	
+		}
+		}while(tipo!=3);
+	}
+	
+	// metodo para el menu de la opcion agregar y para su uso
 	private static void menuAgregar() {
 		int tipo = 0;
+		do {
 		System.out.println();
 		System.out.println("Tipo de registro:");
 		System.out.println("[1] Choripanes");
 		System.out.println("[2] Terremotos");
 		System.out.println("[3] Cancelar");
+		System.out.print("Ingrese el numero de lo que quiera Agregar: ");
 		tipo = scan.nextInt();
 		switch(tipo) {
 		case 1:
@@ -100,7 +238,7 @@ public class Main {
 					System.out.println("["+(i+1) +"] " + participantes[i].getNombre());
 				}
 			}
-				System.out.println("Seleccionar al consumidor: ");
+				System.out.print("Seleccionar al consumidor: ");
 					aux= scan.nextInt();
 					scan.nextLine();
 					
@@ -130,13 +268,15 @@ public class Main {
 						System.out.println("No hay espacio para mas choripanes");
 						break;
 					}
-					if (!guardarLinea("Choripan;"+ nombreNuevo + ";" + largoNuevo + ";" + anchoNuevo + ";" + fechaNueva)) {
+					choripanes[libre] = new Choripan(nombreNuevo,largoNuevo,anchoNuevo,fechaNueva);
+					if (!guardarTodo()) {
+						choripanes[libre] = null;
 						break;
 					}
-				
-					choripanes[libre] = new Choripan(nombreNuevo,largoNuevo,anchoNuevo,fechaNueva);
 					registros++;
-					System.out.println("Choripan agregado");
+					System.out.println("Choripan agregado y guardado en Cosumido.txt");
+					System.out.println("Choripan | " + nombreNuevo + " | " + largoNuevo + " x " + anchoNuevo 
+							+ " cm | " + fechaNueva + " | " + choripanes[libre].calcularKcal() + " kcal");
 					break;
 					
 		case 2:
@@ -145,7 +285,7 @@ public class Main {
 					System.out.println("["+(i+1) + "]" + participantes[i].getNombre());
 				}
 			}
-			System.out.println("Seleccionar al consumidor: ");
+			System.out.print("Seleccionar al consumidor: ");
 			int consu = scan.nextInt();
 			scan.nextLine();
 			
@@ -155,10 +295,10 @@ public class Main {
 			}
 			String nombreT = participantes[consu-1].getNombre();
 			
-			System.out.println("Litros del terremoto: ");
+			System.out.print("Litros del terremoto: ");
 			float litrosNuevo = scan.nextFloat();
 			scan.nextLine();
-			System.out.println("Fecha (YYYY-MM-DD): ");
+			System.out.print("Fecha (YYYY-MM-DD): ");
 			String fechaT = scan.nextLine();
 			
 			int libreT =-1;
@@ -171,18 +311,25 @@ public class Main {
 			if(libreT ==-1) {
 				System.out.println("No hay espacio para mas terremotos");
 				break;
-			}
-			if(!guardarLinea("Terremoto;" + nombreT+ ";" + litrosNuevo + ";" + fechaT)) {
+			}terremotos[libreT] = new Terremoto( nombreT,litrosNuevo,fechaT);
+			if(!guardarTodo()) {
+				terremotos[libreT] = null;
+				break;
+		}
+		registros++;
+		System.out.println("Terremoto agregado y guardado en Consumidos.txt");
+		System.out.println("Terremoto | " + nombreT + " | " + litrosNuevo + " L | " + fechaT + " | " + terremotos[libreT].calcularKcal() + " kcal");
+		break;
+		case 3:
+			break;
+		default:
+			System.out.println("Ingrese una opcion valida");
 			break;
 		}
-		terremotos[libreT] = new Terremoto( nombreT,litrosNuevo,fechaT);
-		registros++;
-		System.out.println("Terremoto agregado");
-		break;
-		}
+		}while(tipo!=3);
 			}
 
-	
+	/// Primer menu que lleva los registros encontrados en los txt
 	private static void verRegistros() {
 		int opcion = 0;
 		do {
@@ -191,12 +338,12 @@ public class Main {
 		System.out.println("[2] Terremotos");
 		System.out.println("[3] Volver al menu");
 		System.out.println("==========================");
-		System.out.println("Seleccione una opcion: ");
+		System.out.print("Seleccione una opcion: ");
 		opcion = scan.nextInt();
 		scan.nextLine();
 		switch(opcion) {
 		case 1:
-			int contador = 0;
+			int contador = 1;
 			System.out.println("======== CHORIPANES =======");
 			System.out.printf("%-5s%-15s%-10s%-10s%-15s%-10s%n",
 					"N°", "Consumidor", "Largo", "Ancho", "Fecha", "Kcal");
@@ -215,11 +362,12 @@ public class Main {
 			
 			}System.out.println("Total: " + contador+" choripanes registrados");
 			System.out.println("===============================");
-			System.out.println("Presione ENTER para continuar:");
+			System.out.print("Presione ENTER para continuar:");
 			scan.nextLine();
+			
 			break;
 		case 2:
-			int contador2 = 0;
+			int contador2 = 1;
 			float sumador = 0;
 			System.out.println("============= TERREMOTOS ==============");
 			System.out.printf("%-5s%-15s%-10s%-15s%-10s%n",
@@ -240,7 +388,7 @@ public class Main {
 				}System.out.println("-------------------------------------------");
 				System.out.println("Total: " + contador2 + " terremotos registrados ("+sumador+" L)");
 				System.out.println("========================================");
-				System.out.println("Presione ENTER para continuar:");
+				System.out.print("Presione ENTER para continuar:");
 				scan.nextLine();
 				break;
 			
@@ -250,6 +398,7 @@ public class Main {
 		}while(opcion !=3);
 		
 	}
+	// lee el archivo Consumidos.txt separandolos por choripan y terremoto 
 	private static void leerConsumidos() throws FileNotFoundException {
 		File txtConsumidos = new File("Consumido.txt");
 		scan = new Scanner(txtConsumidos);
@@ -286,6 +435,8 @@ public class Main {
 			registros++;
 		}
 	}
+	
+	// lee los participantes
 	private static void leerParticipantes() throws FileNotFoundException {
 		int n = 0;
 		File txtParticipantes = new File("Participantes.txt");
@@ -299,15 +450,39 @@ public class Main {
 	}
 
 	
-	private static boolean guardarLinea(String linea) {
-		try ( BufferedWriter bw = new BufferedWriter(new FileWriter("Consumido.txt"))){
-			bw.write(linea);
-			bw.newLine();
+
+	// este metodo crea nuevamente Consumido.txt con las cosas que quieras agregarle y lo ordena
+	private static boolean guardarTodo() {
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter("Consumido.txt"))){
+			for(int i = 0;i<choripanes.length;i++) {
+				if(choripanes[i] != null) {
+					bw.write("Choripan;" + choripanes[i].getConsumidor() + ";"
+							+ choripanes[i].getLargo() + ";" + choripanes[i].getAncho() + ";" + choripanes[i].getFecha());
+					bw.newLine();
+				}
+			}
+			for(int i = 0;i<terremotos.length;i++) {
+				if(terremotos[i] != null) {
+					bw.write("Terremoto;" + terremotos[i].getConsumidor() + ";"+ terremotos[i].getLitros() +  ";" + terremotos[i].getFecha());
+					bw.newLine();
+				}
+			}
 			return true;
 		} catch (IOException e) {
-			System.out.println("Error al guardar archivo");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
 		}
+		
+	}
+	
+	private static String buscarParticipante(String nombre) {
+		for(int i = 0; i <participantes.length;i++) {
+			if(participantes[i] != null && participantes[i].getNombre().equalsIgnoreCase(nombre)) {
+				return participantes[i].getNombre();
+			}
+		}
+		return null;
 	}
 }
 

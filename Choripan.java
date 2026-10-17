@@ -34,4 +34,24 @@ public class Choripan {
 		calorias = (largo*ancho)/3;
 		return calorias;
 	}
+
+	public void setConsumidor(String consumidor) {
+		this.consumidor = consumidor;
+	}
+
+	public void setLargo(int largo) {
+		this.largo = largo;
+	}
+
+	public void setAncho(int ancho) {
+		this.ancho = ancho;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+
+	public void setCalorias(int calorias) {
+		this.calorias = calorias;
+	}
 }
