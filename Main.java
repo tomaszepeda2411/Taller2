@@ -66,7 +66,18 @@ public class Main {
 	
 	
 	private static void calcularMetricas() {
-		
+		int opcion = 0;
+		System.out.println("======== Calcular Metricas =======");
+		System.out.println("  [1] Choripanes comidos en total");
+		System.out.println("  [2] terreTotos tomados en total");
+		System.out.println("  [3] Choripanes comidos por usuario");
+		System.out.println("  [4] Terremotos tomados por usario");
+		System.out.println("  [5] Kcal consumida por usario");
+		System.out.println("  [6] Dias ebrio por usuario");
+		System.out.println("  [7] Volver al menu principal");
+		System.out.println("============================");
+		System.out.println("Selecciona una opcion: ");
+		opcion = scan.nextInt();
 	}
 	private static void actualizarRegistros() {
 		int opcion = 0;
@@ -131,6 +142,7 @@ public class Main {
 			System.out.print("Seleccion el registro a editar(0 para cancelar): ");
 			int registroEditar = scan.nextInt();
 			scan.nextLine();
+			
 			if(registroEditar == 0) {
 				break;
 			}
@@ -141,16 +153,23 @@ public class Main {
 			}
 			
 			Choripan actual = choripanes[registroEditar-1];
-			String desicion = "";
 			
-			System.out.println("Confirma la eliminacion de -> Choripan | " + actual.getConsumidor() + " | " + actual.getLargo()
+			
+			System.out.print("Confirma la eliminacion de -> Choripan | " + actual.getConsumidor() + " | " + actual.getLargo()
 					+ " x " + actual.getAncho() + "cm | " + actual.getFecha() +" (s/n): ");
-			desicion = scan.nextLine();
+			String decicion = scan.nextLine().trim();
 			
-			if(desicion.equalsIgnoreCase("N")) {
+			if(decicion.equalsIgnoreCase("N")) {
 				break;
-			}else if (desicion.equalsIgnoreCase("S")){
-				
+			}else if (decicion.equalsIgnoreCase("S")){
+				for (int i = registroEditar-1;i<choripanes.length-1;i++) {
+					choripanes[i] = choripanes[i+1];
+				}
+				choripanes[choripanes.length-1] = null;
+				registros--;
+				if(guardarTodo()) {
+					System.out.println("Choripan Eliminado");
+				}
 			}else {
 				System.out.println("Ingrese una opcion valida");
 				break;
@@ -502,15 +521,16 @@ public class Main {
 		scan.nextLine();
 		switch(opcion) {
 		case 1:
-			int contador = 1;
+			int contador = 0;
 			System.out.println("======== CHORIPANES =======");
 			System.out.printf("%-5s%-15s%-10s%-10s%-15s%-10s%n",
 					"N°", "Consumidor", "Largo", "Ancho", "Fecha", "Kcal");
 
 			for (int i = 0; i<choripanes.length;i++) {
 				if((choripanes[i]!=null)) {
+					contador++;
 					System.out.printf("%-5d%-15s%-10d%-10d%-15s%-10.2f%n",
-							contador++,
+							contador,
 							choripanes[i].getConsumidor(),
 							choripanes[i].getLargo(),
 							choripanes[i].getAncho(),
@@ -526,7 +546,7 @@ public class Main {
 			
 			break;
 		case 2:
-			int contador2 = 1;
+			int contador2 = 0;
 			float sumador = 0;
 			System.out.println("============= TERREMOTOS ==============");
 			System.out.printf("%-5s%-15s%-10s%-15s%-10s%n",
@@ -534,9 +554,10 @@ public class Main {
 			
 			for (int i=0;i<terremotos.length;i++) {
 				if(terremotos[i]!=null) {
+					contador2++;
 					sumador += terremotos[i].getLitros();
 					System.out.printf("%-5d%-15s%-10.2f%-15s%-10.2f%n",
-							contador2++,
+							contador2,
 							terremotos[i].getConsumidor(),
 							terremotos[i].getLitros(),
 							terremotos[i].getFecha(),
@@ -635,14 +656,7 @@ public class Main {
 		
 	}
 	
-	private static String buscarParticipante(String nombre) {
-		for(int i = 0; i <participantes.length;i++) {
-			if(participantes[i] != null && participantes[i].getNombre().equalsIgnoreCase(nombre)) {
-				return participantes[i].getNombre();
-			}
-		}
-		return null;
-	}
+
 }
 
 
