@@ -86,13 +86,81 @@ public class Main {
 		case 2:
 			menuEditar();
 			break;
-			
+		case 3: 
+			menuEliminar();
+			break;
 			}
 			
 		
 	}while(opcion!=4);
 	}
-	
+	private static void menuEliminar() {
+		scan.nextLine();
+		int tipo = 0;
+		do {
+		System.out.println("Tipo de registro a eliminar:");
+		System.out.println("  [1] Choripan");
+		System.out.println("  [2] Terremoto");
+		System.out.println("  [3] Salir");
+		System.out.print("Seleccione una opcion: ");
+		tipo = scan.nextInt();
+		System.out.println("");
+		switch(tipo) {
+		case 1:
+			System.out.println("======== CHORIPANES =======");
+			System.out.printf("%-5s%-15s%-10s%-10s%-15s%-10s%n",
+					"N°", "Consumidor", "Largo", "Ancho", "Fecha", "Kcal");
+			int contador = 0;
+			for (int i = 0; i<choripanes.length;i++) {
+				if((choripanes[i]!=null)) {
+					contador++;
+					System.out.printf("%-5d%-15s%-10d%-10d%-15s%-10.2f%n",
+							contador,
+							choripanes[i].getConsumidor(),
+							choripanes[i].getLargo(),
+							choripanes[i].getAncho(),
+							choripanes[i].getFecha(),
+							choripanes[i].calcularKcal());
+						}
+
+					}
+			if(contador ==0) {
+				System.out.println("No hay Choripanes registrados");
+				break;
+			}
+			System.out.print("Seleccion el registro a editar(0 para cancelar): ");
+			int registroEditar = scan.nextInt();
+			scan.nextLine();
+			if(registroEditar == 0) {
+				break;
+			}
+			
+			if(registroEditar <1 || registroEditar > contador) {
+				System.out.println("Numero no valido");
+				break;
+			}
+			
+			Choripan actual = choripanes[registroEditar-1];
+			String desicion = "";
+			
+			System.out.println("Confirma la eliminacion de -> Choripan | " + actual.getConsumidor() + " | " + actual.getLargo()
+					+ " x " + actual.getAncho() + "cm | " + actual.getFecha() +" (s/n): ");
+			desicion = scan.nextLine();
+			
+			if(desicion.equalsIgnoreCase("N")) {
+				break;
+			}else if (desicion.equalsIgnoreCase("S")){
+				
+			}else {
+				System.out.println("Ingrese una opcion valida");
+				break;
+			}
+			break;
+		
+		}
+		}while(tipo!=3);
+	}
+	// metodo para editar los consumidos 
 	private static void menuEditar() {
 		scan.nextLine();
 		int tipo = 0;
@@ -205,7 +273,7 @@ public class Main {
 				}
 			}
 		}
-		System.out.println("Fecha [" + actual.getFecha() + "]: ");
+		System.out.print("Fecha [" + actual.getFecha() + "]: ");
 		String nuevaFecha = scan.nextLine().trim();
 		if(!nuevaFecha.isEmpty()) {
 			actual.setFecha(nuevaFecha);
@@ -215,6 +283,97 @@ public class Main {
 			System.out.println("Choripan actualizado");
 		}
 			break; 	
+		
+		case 2:
+			System.out.println("============= TERREMOTOS ==============");
+			System.out.printf("%-5s%-15s%-10s%-15s%-10s%n",
+					"N°", "Consumidor", "Litros","Fecha", "Kcal");
+			int contador2 = 0;
+			for (int i=0;i<terremotos.length;i++) {
+				if(terremotos[i]!=null) {
+					contador2++;
+					System.out.printf("%-5d%-15s%-10.2f%-15s%-10.2f%n",
+							contador2,
+							terremotos[i].getConsumidor(),
+							terremotos[i].getLitros(),
+							terremotos[i].getFecha(),
+							terremotos[i].calcularKcal());
+
+					}
+			}
+			if(contador2 ==0) {
+				System.out.println("No hay terremotos registrados");
+				break;
+			}
+			
+			System.out.print("Seleccione el registro a editar( 0 para cancelar):");
+			int numeroEditar = scan.nextInt();
+			scan.nextLine();
+			if(numeroEditar == 0) {
+				break;
+			}
+			if(numeroEditar<1 || numeroEditar>contador2) {
+				System.out.println("Numero ingresado no valido");
+				break;
+			}
+			Terremoto actualT = terremotos[numeroEditar-1];
+			
+			System.out.println("Registro actual -> Terremoto | "+ actualT.getConsumidor() + " | " + actualT.getLitros() + " L | " + actualT.getFecha());
+			System.out.println("Deje el campo vacio para mantener el valor actual.");
+			System.out.println();
+			
+			boolean consumidorTValido = false;
+			while(!consumidorTValido) {
+				System.out.print("Consumidor [" + terremotos[numeroEditar-1].getConsumidor() + "]:");
+				String nuevoConsumidor = scan.nextLine().trim();
+				if(nuevoConsumidor.isEmpty()) {
+					consumidorTValido = true;
+			}else {
+				for(int i = 0; i<participantes.length;i++) {
+					if((participantes[i] != null) && participantes[i].getNombre().equalsIgnoreCase(nuevoConsumidor)) {
+						actualT.setConsumidor(participantes[i].getNombre());
+						consumidorTValido = true;
+			
+					}
+				}
+				if(!consumidorTValido) {
+					System.out.println("Participante no encontrado en Participante.txt");
+				}
+			}
+		}
+			boolean litrosValido = false;
+			while(!litrosValido) {
+				System.out.print("Litros[" + actualT.getLitros()+ "L]:");
+				String litrosNuevo = scan.nextLine().trim();
+				if(litrosNuevo.isEmpty()) {
+					litrosValido = true;
+				}else {
+					try {
+						float valor = Float.parseFloat(litrosNuevo);
+						if(valor <= 0) {
+							System.out.println("La medida debe ser mayor a 0");
+						}else {
+							actualT.setLitros(valor);
+							litrosValido = true;
+						}
+					}catch(NumberFormatException e) {
+						System.out.println("Ingrese un numero valido");
+					}
+				}
+			}
+			System.out.print("Fecha [" + actualT.getFecha() + "]: ");
+			String nuevaFechaT = scan.nextLine().trim();
+			if(!nuevaFechaT.isEmpty()) {
+				actualT.setFecha(nuevaFechaT);
+			}
+			
+			if(guardarTodo()) {
+				System.out.println("Terremoto actualizado");
+			}
+			break;
+			
+		case 3:
+			break;
 		}
 		}while(tipo!=3);
 	}

@@ -28,4 +28,16 @@ public class Terremoto {
 		float calorias =  ((litros*10)/3);
 		return calorias;
 	}
+
+	public void setConsumidor(String consumidor) {
+		this.consumidor = consumidor;
+	}
+
+	public void setLitros(float litros) {
+		this.litros = litros;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
 }
