@@ -5,7 +5,7 @@ public class Choripan {
 	private int largo;
 	private int ancho;
 	private String fecha;
-	private int calorias = 0;
+	private float calorias = 0;
 	public Choripan(String consumidor, int largo, int ancho, String fecha) {
 		
 		this.consumidor = consumidor;
@@ -51,7 +51,7 @@ public class Choripan {
 		this.fecha = fecha;
 	}
 
-	public void setCalorias(int calorias) {
+	public void setCalorias(float calorias) {
 		this.calorias = calorias;
 	}
 }

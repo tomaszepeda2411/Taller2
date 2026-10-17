@@ -27,7 +27,7 @@ public class Main {
 		System.out.println("================================");
 		System.out.println("LA FONDA DEL PAPU");
 		System.out.println("================================");
-		System.out.println("Registros cargados:" + registros);
+		System.out.println("Registros cargados:" + (contarChoripanes() + contarTerremotos()));
 		System.out.println("----------------------------");
 		do {
 			System.out.println("[1] Ver registros");
@@ -67,17 +67,92 @@ public class Main {
 	
 	private static void calcularMetricas() {
 		int opcion = 0;
+		do {
 		System.out.println("======== Calcular Metricas =======");
 		System.out.println("  [1] Choripanes comidos en total");
 		System.out.println("  [2] terreTotos tomados en total");
 		System.out.println("  [3] Choripanes comidos por usuario");
-		System.out.println("  [4] Terremotos tomados por usario");
-		System.out.println("  [5] Kcal consumida por usario");
+		System.out.println("  [4] Terremotos tomados por usuario");
+		System.out.println("  [5] Kcal consumida por usuario");
 		System.out.println("  [6] Dias ebrio por usuario");
 		System.out.println("  [7] Volver al menu principal");
 		System.out.println("============================");
 		System.out.println("Selecciona una opcion: ");
 		opcion = scan.nextInt();
+		switch(opcion) {
+		case 1:
+			System.out.println("Choripanes comidos en total: " + contarChoripanes());
+			break;
+		case 2:
+			System.out.println("Terremotos tomados en total: " + contarTerremotos());
+			break;
+		case 3:
+			System.out.println("===== Choripanes por usuario ====");
+			for(int i=0;i<participantes.length;i++) {
+				if(participantes[i] !=null) {
+					int cantidad = 0;
+					for(int j= 0;j<choripanes.length;j++) {
+						if(choripanes[j]!=null && choripanes[j].getConsumidor().equalsIgnoreCase(participantes[i].getNombre())) {
+							cantidad++;
+							
+						}
+					}
+					System.out.println(participantes[i].getNombre() + ": " + cantidad);
+				}
+			}
+			break;
+		case 4:
+			System.out.println("===== Terremotos por usuario ====");
+			for(int i=0;i<participantes.length;i++) {
+				if(participantes[i] !=null) {
+					int cantidad = 0;
+					for(int j= 0;j<terremotos.length;j++) {
+						if(terremotos[j]!=null && terremotos[j].getConsumidor().equalsIgnoreCase(participantes[i].getNombre())) {
+							cantidad++;
+							
+						}
+					}
+					System.out.println(participantes[i].getNombre() + ": " + cantidad);
+				}
+			}
+			break;
+		case 5:
+			System.out.println("==== Kcal consumidad por usuario ====");
+			System.out.printf("%-15s%-12s%n","Usuario","Total");
+			for (int i = 0; i < participantes.length; i++) {
+		        if (participantes[i] == null) {
+		            continue;
+		        }
+		    String nombre = participantes[i].getNombre();
+	        float kcalChoripanes = 0;
+	        float kcalTerremotos = 0;
+	        
+	        for (int j = 0; j < choripanes.length; j++) {
+	            if (choripanes[j] != null
+	                    && choripanes[j].getConsumidor().equalsIgnoreCase(nombre)) {
+	                kcalChoripanes += choripanes[j].calcularKcal();
+	            }
+	        }
+	        for (int j = 0; j < terremotos.length; j++) {
+	            if (terremotos[j] != null
+	                    && terremotos[j].getConsumidor().equalsIgnoreCase(nombre)) {
+	                kcalTerremotos += terremotos[j].calcularKcal();
+	            }
+	        }
+	        System.out.printf("%-15s%-12.2f%n",nombre,kcalChoripanes+kcalTerremotos);
+			}
+			
+				
+			break;
+		case 6:
+			break;
+		case 7:
+			break;
+		default:
+			System.out.println("Ingrese una opcion valida");
+			break;
+		}
+		}while(opcion!=7);
 	}
 	private static void actualizarRegistros() {
 		int opcion = 0;
@@ -656,7 +731,24 @@ public class Main {
 		
 	}
 	
-
+	private static int contarChoripanes() {
+	    int total = 0;
+	    for (int i = 0; i < choripanes.length; i++) {
+	        if (choripanes[i] != null) {
+	            total++;
+	        }
+	    }
+	    return total;
+	}
+	private static int contarTerremotos() {
+	    int total = 0;
+	    for (int i = 0; i < terremotos.length; i++) {
+	        if (terremotos[i] != null) {
+	            total++;
+	        }
+	    }
+	    return total;
+	}
 }
 
 
